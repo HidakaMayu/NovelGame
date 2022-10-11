@@ -1,0 +1,2 @@
+# NovelGame
+ ushirono shomen
