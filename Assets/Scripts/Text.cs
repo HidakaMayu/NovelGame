@@ -1,24 +1,53 @@
-using JetBrains.Annotations;
-using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Text : MonoBehaviour
 {
-    [SerializeField]Text text;
-    [SerializeField]Text names;
-    GameObject target;
+    [SerializeField]
+    private TMP_Text _textUi = default;
 
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField]
+    private string[] _messages = default;
+
+    // _messages フィールドから表示する現在のメッセージのインデックス。
+    // 何も指していない場合は -1 とする。
+    private int _currentIndex = -1;
+
+    private void Start()
     {
-       // text.text = "こんにちは。";
-       // names.text = target.name;
+        MoveNext();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
+        if (Input.GetMouseButtonDown(0))
+        {
+            MoveNext();
+        }
+    }
+
+    /// <summary>
+    /// 次のページに進む。
+    /// 次のページが存在しない場合は無視する。
+    /// </summary>
+    private void MoveNext()
+    {
+        if (_messages is null or { Length: 0 }) { return; }
+
+        if (_currentIndex + 1 < _messages.Length)
+        {
+            _currentIndex++;
+            ShowMessage(_messages[_currentIndex]);
+        }
+    }
+
+    /// <summary>
+    /// 指定のメッセージを表示する。
+    /// </summary>
+    /// <param name="message">テキストとして表示するメッセージ。</param>
+    private void ShowMessage(string message)
+    {
+        if (_textUi is null) { return; }
+        _textUi.text = message;
     }
 }
